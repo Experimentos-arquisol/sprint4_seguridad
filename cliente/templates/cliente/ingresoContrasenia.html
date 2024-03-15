@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Ingresar Contraseña</h2>
+<form method="post" action="{% url 'procesar_login' %}">
+    {% csrf_token %}
+    <label for="correo">Correo electrónico:</label>
+    <!-- Asegúrate de que el campo de correo esté deshabilitado para que el usuario no pueda modificarlo -->
+    <input type="email" id="correo" name="correo" value="{{ correo }}" required readonly>
+
+    <label for="contrasena">Contraseña:</label>
+    <input type="password" id="contrasena" name="contrasena" required>
+
+    <button type="submit">Iniciar Sesión</button>
+</form>
+{% endblock %}

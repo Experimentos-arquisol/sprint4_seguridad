@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1, p {
+        text-align: center;
+    }
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .auth-links a {
+        margin: 0 10px;
+    }
+</style>
+<div class="container">
+    <h1>Inicio de Sesión o Registro</h1>
+    <p>Seleccione una opción:</p>
+    <div class="auth-links">
+        <a href="registro/">Registrarse</a>
+        <a href="iniciarSesion/">Iniciar Sesion</a>
+    </div>
+</div>
+{% endblock %}

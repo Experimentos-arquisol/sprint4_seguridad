@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Iniciar Sesión</h2>
+<form method="post" action="{% url 'validar_usuario' %}">
+    {% csrf_token %}
+    <label for="usuario_correo">Correo electronico:</label>
+    <input type="text" id="correo" name="correo" required>
+    <button type="submit">Continuar</button>
+</form>
+{% endblock %}
