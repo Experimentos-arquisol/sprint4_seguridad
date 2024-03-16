@@ -10,7 +10,6 @@ def create_cliente(data):
 
 
 def buscar_cliente(correo_usuario):
-    # Suponiendo que tienes un modelo Cliente con un campo 'correo'
     try:
         cliente = ApiBanco.objects.get(correo=correo_usuario)
         return {'existe': True, 'telefono': cliente.telefono}

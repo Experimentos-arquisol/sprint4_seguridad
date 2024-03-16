@@ -29,8 +29,6 @@ def create_cliente_from_form(form_data):
 
         
     except Exception as e:
-        # Aquí puedes manejar los errores de validación o lo que sea necesario
-        # Esto es solo un ejemplo, en un proyecto real, deberías manejar esto con más detalle.
         return None
 
 

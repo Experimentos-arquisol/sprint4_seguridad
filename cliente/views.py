@@ -30,8 +30,8 @@ def clientes_view(request):
         data = request.POST
         cliente = cl.create_cliente_from_form(data)
         
-        url_api_banco = 'http://localhost:8000/api/'  # Cambia esta URL por la del API de Banco
-        #headers = {'Content-Type': 'application/json'}  # Establece el tipo de contenido como JSON
+        url_api_banco = 'http://localhost:8000/api/'
+
         try:
             response = requests.post(url_api_banco, data=cliente, json=cliente)
             response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
@@ -39,7 +39,7 @@ def clientes_view(request):
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al registrar el cliente en el API de Banco: {e}")
     else:
-        # Aquí se manejaría el error si la creación del cliente no es exitosa
+
         return HttpResponse(status=405)
 
 @csrf_exempt
@@ -54,8 +54,6 @@ def validar_usuario(request):
             response.raise_for_status  # Lanza una excepción si la solicitud no es exitosa
 
             if response.json().get('existe', False):
-                # Si el usuario o correo existe, redirigir al paso de ingreso de contraseña
-                # Aquí debes decidir cómo manejarás el siguiente paso, por ejemplo:
                 telefono = response.json().get('telefono')
                 request.session['correo'] = email  # Guarda en la sesión
                 request.session['telefono'] = telefono
@@ -64,19 +62,18 @@ def validar_usuario(request):
                 return redirect(vista_ingreso_contrasena)
             else:
                 # Si el usuario o correo no existe, mostrar mensaje de error
-                # Ajusta según tu lógica de manejo de mensajes
                 print("f")
                 return redirect(iniciar_sesion)
         except requests.exceptions.RequestException as e:
             #return render(request, 'login_step_one.html', {'error': f"Error al validar el usuario: {e}"})
             pass
 
-    # Si no es un POST o si algo más falla, redirige al formulario inicial
+    
     return render(request, 'cliente/index.html')
 
 
 def vista_ingreso_contrasena(request):
-    correo = request.session.get('correo')  # Asumiendo que has guardado el correo en la sesión
+    correo = request.session.get('correo')  
     telefono = request.session.get('telefono')
     otp = request.session.get('otp')
     #print(telefono)
@@ -84,7 +81,7 @@ def vista_ingreso_contrasena(request):
         context = {'correo': correo , 'telefono' : telefono, 'otp': otp}
         return render(request, 'cliente/ingresoContrasenia.html', context)
     else:
-        # Redirigir al usuario si el correo no está en la sesión (indicativo de que no ha pasado por el primer paso)
+
         return redirect(iniciar_sesion)
     
 def procesar_login(request):
@@ -101,28 +98,22 @@ def procesar_login(request):
 
 
 def enviar_otp_telefono(telefono):
-    # Replace the defaults below with your Telesign authentication credentials or pull them from environment variables.
     customer_id = os.getenv('CUSTOMER_ID', '6A4502A7-AB77-4C43-B919-41CD57E29051')
     api_key = os.getenv('API_KEY', 'b6sr2uFHN88PUSFTdyj/UjcRbT4tddMRzC0mEoNz2PQB/2MR1HJifXyflttmrQQXxfijYXbszR5WD8J3D7b2jw==')
 
-    # Set the default below to your test phone number or pull it from an environment variable. 
-    # In your production code, update the phone number dynamically for each transaction.
+    
     phone_number = os.getenv('PHONE_NUMBER', '57'+telefono)
 
     otp = cl.generar_numero_aleatorio()
 
-    # Set the message text and type.
     message = f'Tu otp es {otp}'
     message_type = "OTP"
 
-    # Instantiate a messaging client object.
     messaging = MessagingClient(customer_id, api_key)
 
-    # Make the request and capture the response.
     response = messaging.message(phone_number, message, message_type)
 
-    # Display the response body in the console for debugging purposes. 
-    # In your production code, you would likely remove this.
+   
     print(f"\nResponse:\n{response.body}\n")
 
     return otp

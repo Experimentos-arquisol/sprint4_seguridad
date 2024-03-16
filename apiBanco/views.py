@@ -24,4 +24,4 @@ def validar_cliente(request):
             return JsonResponse({"existe": True, "telefono": resultado['telefono']}, status=200)
         else:
             # Si 'buscar_cliente' retorna None, el cliente no existe.
-            return JsonResponse({"existe": False}, status=404)  # O considera usar 200 si prefieres no usar 404 para indicar ausencia
+            return JsonResponse({"existe": False}, status=404)
