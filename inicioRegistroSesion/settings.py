@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cliente',
     'apiBanco',
+    'manejadorOfertas',
+    'manejadorSolicitudes',
+    'motorViabilidad',
 ]
 
 MIDDLEWARE = [

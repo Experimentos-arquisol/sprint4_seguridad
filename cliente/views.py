@@ -69,7 +69,7 @@ def validar_usuario(request):
             pass
 
     
-    return render(request, 'cliente/index.html')
+    return render(request, 'clienteindex.html')
 
 
 def vista_ingreso_contrasena(request):

@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 def crear_cliente(request):
     if request.method == 'POST':
         data = request.POST # Los datos del cliente enviados desde cliente
-        # Crea un nuevo cliente en la base de datos de apiBanco
         return al.create_cliente(data)
 
 @csrf_exempt
@@ -20,8 +19,6 @@ def validar_cliente(request):
 
         resultado = al.buscar_cliente(correo_usuario)
         if resultado:
-            # Si 'buscar_cliente' encontró el cliente, 'resultado' contiene un diccionario con datos útiles.
             return JsonResponse({"existe": True, "telefono": resultado['telefono']}, status=200)
         else:
-            # Si 'buscar_cliente' retorna None, el cliente no existe.
             return JsonResponse({"existe": False}, status=404)

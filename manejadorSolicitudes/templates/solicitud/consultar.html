@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Busca tu oferta por tu correo</h2>
+<form method="post" action="{% url 'buscar_oferta' %}">
+    {% csrf_token %}
+    <label for="usuario_correo">Correo electronico:</label>
+    <input type="text" id="correo" name="correo" required>
+    <button type="submit">Continuar</button>
+</form>
+{% endblock %}

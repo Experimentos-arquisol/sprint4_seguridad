@@ -12,3 +12,4 @@ def registro(request):
         return render(request, 'cliente/registro')
 
 
+
