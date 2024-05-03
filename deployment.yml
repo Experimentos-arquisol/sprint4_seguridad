@@ -148,109 +148,6 @@ resources:
           echo "max_connections=2000" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
           sudo service postgresql restart
 
-# Alarms instances
-- type: compute.v1.instance
-  name: cbd-alarms-app-a
-  properties:
-    zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
-    disks:
-    - deviceName: boot
-      type: PERSISTENT
-      boot: true
-      autoDelete: true
-      initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
-    networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
-      networkIP: 10.128.0.53
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
-    tags:
-      items: 
-      - cbd-services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          sudo apt-get update
-          sudo apt install python3-pip -y
-          sudo mkdir /labs
-          cd /labs
-          sudo git clone https://github.com/ISIS2503/ISIS2503-MonitoringApp.git
-          cd ISIS2503-MonitoringApp
-          sudo git checkout Circuit-Breaker
-          sudo pip3 install -r requirements.txt
-- type: compute.v1.instance
-  name: cbd-alarms-app-b
-  properties:
-    zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
-    disks:
-    - deviceName: boot
-      type: PERSISTENT
-      boot: true
-      autoDelete: true
-      initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
-    networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
-      networkIP: 10.128.0.54
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
-    tags:
-      items: 
-      - cbd-services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          sudo apt-get update
-          sudo apt install python3-pip -y
-          sudo mkdir /labs
-          cd /labs
-          sudo git clone https://github.com/ISIS2503/ISIS2503-MonitoringApp.git
-          cd ISIS2503-MonitoringApp
-          sudo git checkout Circuit-Breaker
-          sudo pip3 install -r requirements.txt
-- type: compute.v1.instance
-  name: cbd-alarms-app-c
-  properties:
-    zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
-    disks:
-    - deviceName: boot
-      type: PERSISTENT
-      boot: true
-      autoDelete: true
-      initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
-    networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
-      networkIP: 10.128.0.55
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
-    tags:
-      items: 
-      - cbd-services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          sudo apt-get update
-          sudo apt install python3-pip -y
-          sudo mkdir /labs
-          cd /labs
-          sudo git clone https://github.com/ISIS2503/ISIS2503-MonitoringApp.git
-          cd ISIS2503-MonitoringApp
-          sudo git checkout Circuit-Breaker
-          sudo pip3 install -r requirements.txt
 
 #App instance A
 - type: compute.v1.instance
@@ -281,11 +178,6 @@ resources:
           #!/bin/bash
           sudo apt-get update
           sudo apt install python3-pip -y
-          sudo git clone https://github.com/Experimentos-arquisol/Sprint3.git
-          cd ISIS2503-MonitoringApp
-          sudo pip3 install -r requirements.txt
-          sudo python3 manage.py makemigrations
-          sudo python3 manage.py migrate
 
 #App instance B
 - type: compute.v1.instance
@@ -316,11 +208,7 @@ resources:
           #!/bin/bash
           sudo apt-get update
           sudo apt install python3-pip -y
-          sudo git clone https://github.com/Experimentos-arquisol/Sprint3.git
-          cd ISIS2503-MonitoringApp
-          sudo pip3 install -r requirements.txt
-          sudo python3 manage.py makemigrations
-          sudo python3 manage.py migrate
+
 
 #App instance C
 - type: compute.v1.instance
@@ -349,4 +237,5 @@ resources:
       - key: startup-script
         value: |
           #!/bin/bash
-          
+          sudo apt-get update
+          sudo apt install python3-pip -y

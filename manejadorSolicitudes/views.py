@@ -77,6 +77,9 @@ def ver_solicitud(request):
 def esperar(request):
     return render(request, 'solicitud/espera.html')
 
+def health_check(request):
+    return JsonResponse({'message': 'OK'}, status=200)
+
 # @csrf_exempt
 # def oferta_lista(request):
 #     return render(request, 'solicitud/solicitud_lista.html')
