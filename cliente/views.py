@@ -18,57 +18,67 @@ from telesign.messaging import MessagingClient
 
 
 
-# Create your views here.
 @csrf_exempt
 def clientes_view(request):
-
     if request.method == 'GET':
-            return render(request, 'cliente/index.html')
-
-
+        return render(request, 'cliente/index.html')
     elif request.method == 'POST':
-        data = request.POST
-        cliente = cl.create_cliente_from_form(data)
+        url_api_validacion = 'http://localhost:8000/api/validar_cliente/'
+        email = request.POST.get('correo')
+    
         
-        url_api_banco = 'http://localhost:8000/api/'
-
         try:
-            response = requests.post(url_api_banco, data=cliente, json=cliente)
+            response = requests.post(url_api_validacion, data={'correo': email})
             response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
-            return render(request, 'cliente/index.html')
-        except requests.exceptions.RequestException as e:
-            return HttpResponse(f"Error al registrar el cliente en el API de Banco: {e}")
-    else:
+        except:
+            print("aaaaa")
 
-        return HttpResponse(status=405)
+        if response.json().get('existe', False):
+            return redirect(validar_usuario)
+        else:
+            return render(request, 'cliente/registro2.html')
+
+@csrf_exempt
+def crear_usuario(request):
+    data = request.POST
+    cliente = cl.create_cliente_from_form(data)
+    try:
+        url_api_banco = 'http://localhost:8000/api/'
+        response = requests.post(url_api_banco, data=cliente, json=cliente)
+        response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+        return render(request, 'cliente/index.html')
+    except requests.exceptions.RequestException as e:
+        return HttpResponse(f"Error al registrar el cliente en el API de Banco: {e}")
+
 
 @csrf_exempt
 def validar_usuario(request):
-    if request.method == 'POST':
-        email = request.POST.get('correo')
-        url_api_banco = 'http://localhost:8000/api/validar_cliente/'
+    email = request.POST.get('correo')
+    url_api_banco = 'http://localhost:8000/api/validar_cliente/'
 
-        try:
-            response = requests.post(url_api_banco, data={'correo': email})
-            print(response)
-            response.raise_for_status  # Lanza una excepción si la solicitud no es exitosa
+    try:
+        response = requests.post(url_api_banco, data={'correo': email})
+        print(response)
+        response.raise_for_status  # Lanza una excepción si la solicitud no es exitosa
 
-            if response.json().get('existe', False):
-                telefono = response.json().get('telefono')
-                request.session['correo'] = email  # Guarda en la sesión
-                request.session['telefono'] = telefono
-                otp = enviar_otp_telefono(telefono)
-                request.session['otp'] = otp
-                return redirect(vista_ingreso_contrasena)
-            else:
-                # Si el usuario o correo no existe, mostrar mensaje de error
-                print("f")
-                return redirect(iniciar_sesion)
-        except requests.exceptions.RequestException as e:
-            #return render(request, 'login_step_one.html', {'error': f"Error al validar el usuario: {e}"})
-            pass
+        if response.json().get('existe', False):
 
-    
+            telefono = response.json().get('telefono')
+            print(telefono)
+            request.session['correo'] = email  # Guarda en la sesión
+            request.session['telefono'] = telefono
+            otp = enviar_otp_telefono(telefono)
+            request.session['otp'] = otp
+            return redirect(vista_ingreso_contrasena)
+        else:
+            # Si el usuario o correo no existe, mostrar mensaje de error
+            print("f")
+            return redirect(iniciar_sesion)
+    except requests.exceptions.RequestException as e:
+        #return render(request, 'login_step_one.html', {'error': f"Error al validar el usuario: {e}"})
+        pass
+
+
     return render(request, 'clienteindex.html')
 
 
@@ -76,7 +86,7 @@ def vista_ingreso_contrasena(request):
     correo = request.session.get('correo')  
     telefono = request.session.get('telefono')
     otp = request.session.get('otp')
-    #print(telefono)
+    print(telefono)
     if correo:
         context = {'correo': correo , 'telefono' : telefono, 'otp': otp}
         return render(request, 'cliente/ingresoContrasenia.html', context)
