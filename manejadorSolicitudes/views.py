@@ -1,10 +1,10 @@
-    from django.shortcuts import render, redirect
-    from django.views.decorators.csrf import csrf_exempt
-    import requests
-    from django.http import HttpResponse
-    from .logic import solicitudes_logic as sl
-    from django.http import QueryDict
-    from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+import requests
+from django.http import HttpResponse
+from .logic import solicitudes_logic as sl
+from django.http import QueryDict
+from django.http import JsonResponse
 
 
 
