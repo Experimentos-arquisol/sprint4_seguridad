@@ -133,7 +133,7 @@ resources:
 
 #App instance A
 - type: compute.v1.instance
-  name: majeadorUsuarios-app-a
+  name: majeador-usuarios-app-a
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
@@ -163,7 +163,7 @@ resources:
 
 #App instance B
 - type: compute.v1.instance
-  name: apiCrm-app-b
+  name: api-crm-app-b
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
