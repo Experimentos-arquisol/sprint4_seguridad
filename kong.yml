@@ -1,0 +1,17 @@
+_format_version: "2.1"
+
+services:
+- name: banco-server
+  url: http://localhost:8000/cliente/registro/
+  routes:
+  - name: routes
+    paths:
+    - /
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 6000
+      hour: 360000
+      policy: local
+      limit_by: header
+      header_name: api-key
