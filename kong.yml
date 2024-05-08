@@ -2,7 +2,7 @@ _format_version: "2.1"
 
 services:
 - name: banco-server
-  url: http://localhost:8000/cliente/registro/
+  url: http://34.30.224.53:8080/cliente/registro/
   routes:
   - name: routes
     paths:
