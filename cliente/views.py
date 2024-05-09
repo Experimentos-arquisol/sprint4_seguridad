@@ -59,7 +59,7 @@ def validar_usuario(request):
     try:
         response = requests.post(url_api_banco, data={'correo': email})
         print(response)
-        response.raise_for_status  # Lanza una excepción si la solicitud no es exitosa
+        response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
 
         if response.json().get('existe', False):
 
