@@ -133,13 +133,15 @@ def verificar_otp(otp, almacenado):
 
 
 
-
+@csrf_exempt
 def registro_cliente_view(request):
     if request.method == 'GET':
         return render(request, 'cliente/registro.html')
-    
+
+@csrf_exempt
 def inicio_sesion_exitoso(request):
     return render(request, 'cliente/inicio.html')
 
+@csrf_exempt
 def iniciar_sesion(request):
     return render(request, 'cliente/iniciarSesion.html')
