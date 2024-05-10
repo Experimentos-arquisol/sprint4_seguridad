@@ -15,3 +15,36 @@ services:
       policy: local
       limit_by: header
       header_name: api-key
+
+
+services:
+- name: banco-server
+  url: http://104.154.47.204:8080/cliente/registro/
+  routes:
+  - name: routes
+    paths:
+    - /
+    - /cliente
+  plugins:
+  - name: rate-limiting
+    config:
+      minute: 500
+      hour: 30000
+      policy: local
+      limit_by: header
+      header_name: api-key
+
+plugins:
+- name: banco-server
+ route: http://104.154.47.204:8080/cliente/registro/
+ config:
+   limit:
+   - 5
+   window_size:
+   - 30
+   identifier: consumer
+   sync_rate: -1
+   namespace: example_namespace
+   strategy: local
+   hide_client_headers: false
+
