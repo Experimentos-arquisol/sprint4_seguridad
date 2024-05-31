@@ -43,16 +43,8 @@ def consultar_solicitudes():
         # Obtener el generador de documentos
         solicitudes_stream = settings.DB.collection('solicitudes').stream()
         
-        # Crear una lista para almacenar los documentos
-        solicitudes = []
-        
-        # Iterar sobre el generador para procesar cada documento
-        for solicitud in solicitudes_stream:
-            # Convertir el documento a un diccionario y añadirlo a la lista
-            solicitudes.append(solicitud.to_dict())
-        
-        # Devolver la lista de documentos procesados
-        return solicitudes
+        print(solicitudes_stream)
+        return solicitudes_stream
         
     except Exception as e:
         print(e)
