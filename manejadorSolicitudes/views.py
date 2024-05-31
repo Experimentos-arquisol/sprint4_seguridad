@@ -40,8 +40,10 @@ def ver_solicitud(request):
     elif request.method == 'POST':
         data = request.POST
         try:
-            if validar_usuario(request).json()['existe']:
-                solicitud = sl.consultar_solicitud(data['correo'])
+            datos = validar_usuario(request).json()
+            if datos['existe']:
+                solicitud = sl.consultar_solicitud(datos['correo'])
+                print(solicitud)
                 return render(request, 'solicitud/solicitud_lista.html', {'solicitud': solicitud })
             else:
                 return render(request, 'solicitud/noexitoso.html', {'error': 'El usuario no existe en el Banco'})
