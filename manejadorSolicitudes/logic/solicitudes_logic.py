@@ -39,14 +39,25 @@ def enviar_solicitud(form_data):
         return None
     
 def consultar_solicitudes():
-
     try:
-        solicitudes = settings.DB.collection('solicitudes').stream()
-        print(settings.DB.collection('solicitudes').stream())
+        # Obtener el generador de documentos
+        solicitudes_stream = settings.DB.collection('solicitudes').stream()
+        
+        # Crear una lista para almacenar los documentos
+        solicitudes = []
+        
+        # Iterar sobre el generador para procesar cada documento
+        for solicitud in solicitudes_stream:
+            # Convertir el documento a un diccionario y añadirlo a la lista
+            solicitudes.append(solicitud.to_dict())
+        
+        # Devolver la lista de documentos procesados
         return solicitudes
+        
     except Exception as e:
         print(e)
         return e
+
     
 def consultar_solicitud(correo):
     try:
