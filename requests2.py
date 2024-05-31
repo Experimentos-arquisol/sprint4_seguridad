@@ -12,7 +12,7 @@ tiempo_inicial = time.time()
 def enviar_peticion(n):
     # Enviar la petición
     headers = {"api-key": "badUser344"}
-    response = requests.post("http://34.30.171.140:8000", json={"correo": "1correo@prueba"}, headers=headers)
+    response = requests.post("http://35.188.98.62:8000", json={"correo": "Juan10@sprint4.com"}, headers=headers)
     # response = requests.post("http://35.188.104.109:8080/cliente/registro/", json={"correo": "1correo@prueba"}, headers=headers)
 
     momento = time.time() - tiempo_inicial

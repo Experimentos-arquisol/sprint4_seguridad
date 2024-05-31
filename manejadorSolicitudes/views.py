@@ -76,6 +76,7 @@ def validar_usuario(request):
 def esperar(request):
     return render(request, 'solicitud/espera.html')
 
+@csrf_exempt
 def health_check(request):
     return JsonResponse({'message': 'OK'}, status=200)
 

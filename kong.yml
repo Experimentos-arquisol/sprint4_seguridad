@@ -1,37 +1,78 @@
 _format_version: "2.1"
 
-
-
 services:
-- name: banco-server
-  url: http://104.154.47.204:8080/cliente/registro/
-  routes:
-  - name: routes
-    paths:
-    - /
-    - /cliente
-  plugins:
-  - name: rate-limiting
-    config:
-      minute: 500
-      hour: 30000
-      policy: local
-      limit_by: header
-      header_name: api-key
+  - name: monitoring_service
+    host: monitoring_upstream
+    protocol: http
+    routes:
+      - name: manejadorSolicitudes
+        paths:
+          - /
+        strip_path: false
 
+  - name: banco-server-1
+    url: http://35.193.186.246:8080/solicitud/verSolicitud
+    routes:
+      - name: route1
+        paths:
+          - /solicitud
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 500
+          hour: 30000
+          policy: local
+          limit_by: header
+          header_name: api-key
 
-# services:
-# - name: banco-server
-#   url: http://34.30.224.53:8080/cliente/registro/
-#   routes:
-#   - name: routes
-#     paths:
-#     - /
-#   plugins:
-#   - name: rate-limiting
-#     config:
-#       minute: 6000
-#       hour: 360000
-#       policy: local
-#       limit_by: header
-#       header_name: api-key
+  - name: banco-server-2
+    url: http://34.41.5.210:8080/solicitud/verSolicitud
+    routes:
+      - name: route2
+        paths:
+          - /solicitud
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 500
+          hour: 30000
+          policy: local
+          limit_by: header
+          header_name: api-key
+  
+  - name: banco-server-3
+    url: http://34.121.216.192:8080/solicitud/verSolicitud
+    routes:
+      - name: route3
+        paths:
+          - /solicitud
+    plugins:
+      - name: rate-limiting
+        config:
+          minute: 500
+          hour: 30000
+          policy: local
+          limit_by: header
+          header_name: api-key
+
+upstreams:
+  - name: monitoring_upstream
+    targets:
+      - target: 10.128.0.56:8080
+        weight: 100
+      - target: 10.128.0.57:8080
+        weight: 100
+      - target: 10.128.0.10:8080
+        weight: 100
+
+    healthchecks:
+      threshold: 50
+      active:
+        http_path: /health/
+        timeout: 5
+        healthy:
+          successes: 2
+          interval: 5
+        unhealthy:
+          tcp_failures: 2
+          interval: 5
