@@ -28,9 +28,6 @@ def enviar_solicitud(request):
         solicitud = sl.enviar_solicitud(data)
         
         try:
-            url_crm = 'http://localhost:8000/validar_cliente/'
-            response = requests.post(url_crm, data=data["correo"])
-            response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
             return render(request, 'solicitud/creacion.html')
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al enviar la solicitud al Banco: {e}", status=500)
@@ -43,18 +40,31 @@ def ver_solicitud(request):
     elif request.method == 'POST':
         data = request.POST
         try:
+            validar_usuario(request)
             solicitud = sl.consultar_solicitud(data['correo'])
             return render(request, 'solicitud/solicitud_lista.html', {'solicitud': solicitud })
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al consultar la solicitud al Banco: {e}", status=500)
 
+@csrf_exempt
 def ver_solicitudes(request):
     if request.method == 'GET':
         solicitudes = sl.consultar_solicitudes()
         return render(request, 'solicitud/vista_solicitudes.html', {'solicitudes': solicitudes})
 
 
+@csrf_exempt
+def validar_usuario(request):
+    email = request.POST.get('correo')
+    url_manejador_usuarios = 'http://localhost:8000/cliente/validarUsuario/'
 
+    try:
+        response = requests.post(url_manejador_usuarios, data={'correo': email})
+        print(response)
+        response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+        
+    except requests.exceptions.RequestException as e:
+        return HttpResponse(f"Error al validar el cliente en el API de Banco: {e}")
 
 @csrf_exempt
 def esperar(request):

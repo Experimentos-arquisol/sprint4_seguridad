@@ -23,7 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('cliente/', include('cliente.urls')),
-    path('api/', include('apiBanco.urls')),
     path('solicitud/', include('manejadorSolicitudes.urls')),
-    path('ofertas/', include('manejadorOfertas.urls'))
 ]
