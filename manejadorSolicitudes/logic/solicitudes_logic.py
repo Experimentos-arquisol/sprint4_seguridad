@@ -41,7 +41,7 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
     try:
         # Obtener el generador de documentos
-        solicitudes_stream = settings.DB.collection('solicitudes').stream()
+        solicitudes_stream = settings.DB.collection('solicitudes').get()
         
         print(solicitudes_stream)
         return solicitudes_stream
