@@ -82,9 +82,7 @@ WSGI_APPLICATION = 'inicioRegistroSesion.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # Path to your Firebase Admin SDK key
-FIREBASE_CREDENTIALS_PATH = os.path.join(BASE_DIR, 'healthy-firefly-415316-firebase-adminsdk-o2p1c-f94aac89b0.json')
-cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
-firebase_admin.initialize_app(cred)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credenciales.json"
 
 # Get Firestore database instance
 DB = datastore.Client()
