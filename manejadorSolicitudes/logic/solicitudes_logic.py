@@ -1,55 +1,35 @@
 from ..models import ManejadorSolicitudes
-from google.cloud import firestore
 from django.conf import settings
+from google.cloud import datastore
 
 def enviar_solicitud(form_data):
     try:
-        # solicitud = ManejadorSolicitudes.objects.create(
-        #     correo=form_data['correo'],
-        #     profesion=form_data['profesion'],
-        #     actividad_economica=form_data['actividad'],
-        #     empresa=form_data['empresa'],
-        #     ingresos=form_data['ingresos'],
-        #     deudas=form_data['deudas'],
-        # )
-        doc_ref = settings.DB.collection('solicitudes').document('user_id')
-        doc_ref.set({
-            'correo': f'{form_data["correo"]}',
-            'profesion': f'{form_data["profesion"]}',
-            'actividad_economica': f'{form_data["actividad"]}',
-            'empresa': f'{form_data["empresa"]}',
-            'ingresos': f'{form_data["ingresos"]}',
-            'deudas': f'{form_data["deudas"]}',
+        # Crea una entidad
+        key = settings.DB.key('Solicitud')
+        solicitud = datastore.Entity(key=key)
+        solicitud.update({
+            'correo': form_data['correo'],
+            'profesion': form_data['profesion'],
+            'actividad_economica': form_data['actividad'],
+            'empresa': form_data['empresa'],
+            'ingresos': form_data['ingresos'],
+            'deudas': form_data['deudas'],
         })
-
-        # solicitud = {
-        #     "profesion":form_data['profesion'],
-        #     "actividad":form_data['actividad'],
-        #     "empresa":form_data['empresa'],
-        #     "ingresos":form_data['ingresos'],
-        #     "deudas":form_data['deudas'],
-        #     "correo":form_data['correo'],
-        # }
-
-
-        # return solicitud
-
-        
+        settings.DB.put(solicitud)
+        return 'Solicitud guardada con éxito'
     except Exception as e:
         print(e)
-        return e
+        return str(e)
     
 def consultar_solicitudes():
     try:
-        # Obtener el generador de documentos
-        solicitudes_stream = settings.DB.collection('solicitudes').stream()
-        
-        print(solicitudes_stream)
-        return solicitudes_stream
-        
+        query = settings.DB.query(kind='Solicitud')
+        resultados = list(query.fetch())
+        return [dict(result) for result in resultados]
     except Exception as e:
         print(e)
-        return e
+        return str(e)
+
 
     
 def consultar_solicitud(correo):
