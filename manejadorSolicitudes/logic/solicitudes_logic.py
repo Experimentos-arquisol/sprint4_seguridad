@@ -12,7 +12,7 @@ def enviar_solicitud(form_data):
         #     ingresos=form_data['ingresos'],
         #     deudas=form_data['deudas'],
         # )
-        doc_ref = db.collection('solicitudes').document('user_id')
+        doc_ref = settings.DB.collection('solicitudes').document('user_id')
         doc_ref.set({
             'correo': f'{form_data["correo"]}',
             'profesion': f'{form_data["profesion"]}',
@@ -41,7 +41,7 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
     try:
         # Obtener el generador de documentos
-        solicitudes_stream = settings.DB.collection('solicitudes').get()
+        solicitudes_stream = settings.DB.collection('solicitudes').stream()
         
         print(solicitudes_stream)
         return solicitudes_stream
