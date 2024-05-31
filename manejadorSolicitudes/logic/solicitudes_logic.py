@@ -39,7 +39,7 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
 
     try:
-        solicitudes = db.collection('solicitudes').stream()
+        solicitudes = db.collection('solicitudes').get()
         return solicitudes
     except Exception as e:
         return None
