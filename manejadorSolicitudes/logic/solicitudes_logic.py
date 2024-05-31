@@ -45,7 +45,7 @@ def consultar_solicitudes():
         print(documents)
         return solicitudes
     except Exception as e:
-        return None
+        return e
     
 def consultar_solicitud(correo):
     try:
