@@ -2,15 +2,23 @@ from ..models import ManejadorSolicitudes
 
 def enviar_solicitud(form_data):
     try:
-        solicitud = ManejadorSolicitudes.objects.create(
-            correo=form_data['correo'],
-            profesion=form_data['profesion'],
-            actividad_economica=form_data['actividad'],
-            empresa=form_data['empresa'],
-            ingresos=form_data['ingresos'],
-            deudas=form_data['deudas'],
-        )
-        solicitud.save()
+        # solicitud = ManejadorSolicitudes.objects.create(
+        #     correo=form_data['correo'],
+        #     profesion=form_data['profesion'],
+        #     actividad_economica=form_data['actividad'],
+        #     empresa=form_data['empresa'],
+        #     ingresos=form_data['ingresos'],
+        #     deudas=form_data['deudas'],
+        # )
+        doc_ref = db.collection('solicitudes').document('user_id')
+        doc_ref.set({
+            'correo': f'{form_data["correo"]}',
+            'profesion': f'{form_data["profesion"]}',
+            'actividad_economica': f'{form_data["actividad"]}',
+            'empresa': f'{form_data["empresa"]}',
+            'ingresos': f'{form_data["ingresos"]}',
+            'deudas': f'{form_data["deudas"]}',
+        })
 
         # solicitud = {
         #     "profesion":form_data['profesion'],
@@ -29,8 +37,9 @@ def enviar_solicitud(form_data):
         return None
     
 def consultar_solicitudes():
+
     try:
-        solicitudes = ManejadorSolicitudes.objects.all()
+        solicitudes = db.collection('solicitudes').stream()
         return solicitudes
     except Exception as e:
         return None
