@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, initialize_app
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from pathlib import Path
@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'inicioRegistroSesion.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 # Path to your Firebase Admin SDK key
-cred = credentials.Certificate('/arquisol-379fc-firebase-adminsdk-pmcpa-0cbc23e926.json')
+FIREBASE_CREDENTIALS_PATH = os.path.join(BASE_DIR, 'arquisol-379fc-firebase-adminsdk-pmcpa-0cbc23e926.json')
+cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
 firebase_admin.initialize_app(cred)
 
 # Get Firestore database instance
