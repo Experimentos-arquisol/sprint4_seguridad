@@ -39,8 +39,10 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
 
     try:
-        solicitudes = db.collection('solicitudes')
-        print(db.collection('solicitudes'))
+        solicitudes = db.collection('solicitudes').stream()
+        print(db.collection('solicitudes').stream())
+        documents = [{doc.id: doc.to_dict()} for doc in solicitudes]
+        print(documents)
         return solicitudes
     except Exception as e:
         return None
