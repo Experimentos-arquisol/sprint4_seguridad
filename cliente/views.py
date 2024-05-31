@@ -43,7 +43,7 @@ def crear_usuario(request):
     data = request.POST
     cliente = cl.create_cliente_from_form(data)
     try:
-        url_api_banco = 'http://localhost:8000/api/'
+        url_api_banco = 'http://localhost:8080/api/'
         response = requests.post(url_api_banco, data=cliente, json=cliente)
         response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
         return render(request, 'cliente/index.html')
