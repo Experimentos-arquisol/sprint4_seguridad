@@ -70,6 +70,7 @@ resources:
     - IPProtocol: TCP
       ports:
       - 5432
+      - 27017
 
 # Kong instance
 - type: compute.v1.instance

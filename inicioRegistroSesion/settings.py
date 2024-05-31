@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from pathlib import Path
@@ -78,20 +80,27 @@ WSGI_APPLICATION = 'inicioRegistroSesion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': "clientes",
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': '192.168.10.20:27017',  # Asegúrate de que la IP y el puerto son correctos
-            'username': 'admin_user',
-            'password': 'sprint321',
-            'authSource': 'admin',  # La base de datos contra la cual se autentica
-            'authMechanism': 'SCRAM-SHA-1'  # Mecanismo de autenticación
-        }
-    }
-}
+# Path to your Firebase Admin SDK key
+cred = credentials.Certificate('/arquisol-379fc-firebase-adminsdk-pmcpa-0cbc23e926.json')
+firebase_admin.initialize_app(cred)
+
+# Get Firestore database instance
+db = firestore.client()
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': "clientes",
+#         'ENFORCE_SCHEMA': False,
+#         'CLIENT': {
+#             'host': '10.128.0.53:27017',  # Asegúrate de que la IP y el puerto son correctos
+#             'username': 'admin_user',
+#             'password': 'sprint321',
+#             'authSource': 'admin',  # La base de datos contra la cual se autentica
+#             'authMechanism': 'SCRAM-SHA-1'  # Mecanismo de autenticación
+#         }
+#     }
+# }
 
 
 # Password validation
