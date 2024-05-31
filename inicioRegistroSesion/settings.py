@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
-import firebase_admin
-from firebase_admin import credentials
+
 from google.cloud import datastore
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
