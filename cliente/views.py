@@ -54,7 +54,7 @@ def crear_usuario(request):
 @csrf_exempt
 def validar_usuario(request):
     email = request.POST.get('correo')
-    url_api_banco = 'http://34.123.59.222:5000/validar_cliente/'
+    url_api_banco = 'http://34.136.72.173:8080/validar_cliente/'
     print(email)
     try:
         response = requests.post(url_api_banco, data={'correo': email})
