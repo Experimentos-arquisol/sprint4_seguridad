@@ -80,12 +80,16 @@ WSGI_APPLICATION = 'inicioRegistroSesion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'djongo',
         'NAME': "clientes",
-        'USER': "admin",
-        'PASSWORD': "admin",
-        'HOST': "localhost",
-        "PORT": "5432",
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': '192.168.10.20:27017',  # Asegúrate de que la IP y el puerto son correctos
+            'username': 'admin_user',
+            'password': 'sprint321',
+            'authSource': 'admin',  # La base de datos contra la cual se autentica
+            'authMechanism': 'SCRAM-SHA-1'  # Mecanismo de autenticación
+        }
     }
 }
 
