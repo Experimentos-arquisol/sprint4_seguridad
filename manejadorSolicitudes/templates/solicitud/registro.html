@@ -4,6 +4,9 @@
 <h2>Formulario de Registro de Cliente</h2>
 <form method="post" action="{% url 'enviar_solicitud' %}">
     {% csrf_token %}
+    <label for="correo">Correo electronico:</label>
+    <input type="text" id="correo" name="correo" required><br>
+
     <label for="profesion">Profesion:</label>
     <input type="text" id="profesion" name="profesion" required><br>
 

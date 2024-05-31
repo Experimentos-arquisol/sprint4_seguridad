@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Busca tu oferta por tu correo</h2>
-<form method="post" action="{% url 'buscar_oferta' %}">
+<form method="post" action="">
     {% csrf_token %}
     <label for="usuario_correo">Correo electronico:</label>
     <input type="text" id="correo" name="correo" required>

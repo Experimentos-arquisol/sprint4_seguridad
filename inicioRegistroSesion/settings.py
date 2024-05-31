@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'inicioRegistroSesion.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "usuarios_db",
-        'USER': "admin_user",
-        'PASSWORD': "sprint321",
+        'NAME': "clientes",
+        'USER': "admin",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         "PORT": "5432",
     }

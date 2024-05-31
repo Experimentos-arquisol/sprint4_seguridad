@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <table>
+<table>
   <tr>
     <th>ID</th>
     <th>Correo</th>
@@ -10,7 +10,9 @@
     <th>Empresa</th>
     <th>Ingresos</th>
     <th>Deudas</th>
+
   </tr>
+  {% for solicitud in solicitudes %}
   <tr>
     <td>{{ solicitud.id }}</td>
     <td>{{ solicitud.correo }}</td>
@@ -20,5 +22,6 @@
     <td>{{ solicitud.ingresos}}</td>
     <td>{{ solicitud.deudas}}</td>
   </tr>
+  {% endfor %}
 </table>
 {% endblock %}

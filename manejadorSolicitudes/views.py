@@ -23,28 +23,15 @@ def enviar_solicitud(request):
         return render(request, 'solicitud/registro.html')
 
     elif request.method == 'POST':
-        correo_usuario = request.session.get('correo')
-        if correo_usuario is None:
-            return redirect('iniciar_sesion')  # Redirige si no hay sesión de usuario
-
-        # Hacer una copia mutable del QueryDict
-        data = request.POST.copy()
-        data['correo'] = correo_usuario  # Agregar el correo al QueryDict mutable
-        # print(data)
-
+        data = request.POST
         # Procesar la solicitud con los datos modificados
         solicitud = sl.enviar_solicitud(data)
-        # print('datpssss')
-        # print(solicitud)
-        # print('datpssss')
-
-        url_manejador_ofertas = 'http://localhost:8000/ofertas/'
-
+        
         try:
-            response = requests.post(url_manejador_ofertas, json=solicitud)
-            response.raise_for_status()
-            oferta_info = response.json()
-            return render(request, 'solicitud/solicitud_lista.html', {'oferta': oferta_info['oferta']})
+            url_crm = 'http://localhost:8000/validar_cliente/'
+            response = requests.post(url_crm, data=data["correo"])
+            response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+            return render(request, 'solicitud/creacion.html')
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al enviar la solicitud al Banco: {e}", status=500)
 
@@ -55,21 +42,17 @@ def ver_solicitud(request):
 
     elif request.method == 'POST':
         data = request.POST
-
-
-        url_manejador_ofertas = 'http://localhost:8000/ofertas/consultarOferta'
-
         try:
-            response = requests.post(url_manejador_ofertas, data=data)
-            print('llego')
-            response.raise_for_status()
-            oferta_info = response.json()
-            # print(oferta_info)
-            return render(request, 'solicitud/solicitud_lista.html', {'oferta': oferta_info})
+            solicitud = sl.consultar_solicitud(data['correo'])
+            return render(request, 'solicitud/solicitud_lista.html', {'solicitud': solicitud })
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al consultar la solicitud al Banco: {e}", status=500)
 
-            
+def ver_solicitudes(request):
+    if request.method == 'GET':
+        solicitudes = sl.consultar_solicitudes()
+        return render(request, 'solicitud/vista_solicitudes.html', {'solicitudes': solicitudes})
+
 
 
 

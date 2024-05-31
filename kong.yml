@@ -1,20 +1,20 @@
 _format_version: "2.1"
 
-services:
-- name: banco-server
-  url: http://34.30.224.53:8080/cliente/registro/
-  routes:
-  - name: routes
-    paths:
-    - /
-  plugins:
-  - name: rate-limiting
-    config:
-      minute: 6000
-      hour: 360000
-      policy: local
-      limit_by: header
-      header_name: api-key
+# services:
+# - name: banco-server
+#   url: http://34.30.224.53:8080/cliente/registro/
+#   routes:
+#   - name: routes
+#     paths:
+#     - /
+#   plugins:
+#   - name: rate-limiting
+#     config:
+#       minute: 6000
+#       hour: 360000
+#       policy: local
+#       limit_by: header
+#       header_name: api-key
 
 
 services:
@@ -33,18 +33,4 @@ services:
       policy: local
       limit_by: header
       header_name: api-key
-
-plugins:
-- name: banco-server
- route: http://104.154.47.204:8080/cliente/registro/
- config:
-   limit:
-   - 5
-   window_size:
-   - 30
-   identifier: consumer
-   sync_rate: -1
-   namespace: example_namespace
-   strategy: local
-   hide_client_headers: false
 
