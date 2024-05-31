@@ -1,5 +1,6 @@
 from ..models import ManejadorSolicitudes
 from google.cloud import firestore
+from django.conf import settings
 
 def enviar_solicitud(form_data):
     try:
@@ -40,8 +41,8 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
 
     try:
-        solicitudes = db.collection('solicitudes').stream()
-        print(db.collection('solicitudes').stream())
+        solicitudes = settings.db.collection('solicitudes').stream()
+        print(settings.db.collection('solicitudes').stream())
         documents = [{doc.id: doc.to_dict()} for doc in solicitudes]
         print(documents)
         return solicitudes
