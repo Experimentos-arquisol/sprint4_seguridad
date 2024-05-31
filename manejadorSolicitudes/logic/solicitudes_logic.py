@@ -12,7 +12,7 @@ def enviar_solicitud(form_data):
         #     ingresos=form_data['ingresos'],
         #     deudas=form_data['deudas'],
         # )
-        doc_ref = db.collection('solicitudes').document('user_id')
+        doc_ref = settings.DB.collection('solicitudes').document('user_id')
         doc_ref.set({
             'correo': f'{form_data["correo"]}',
             'profesion': f'{form_data["profesion"]}',
@@ -36,7 +36,8 @@ def enviar_solicitud(form_data):
 
         
     except Exception as e:
-        return None
+        print(e)
+        return e
     
 def consultar_solicitudes():
     try:
