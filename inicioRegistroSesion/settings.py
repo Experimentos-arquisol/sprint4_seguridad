@@ -88,20 +88,11 @@ firebase_admin.initialize_app(cred)
 # Get Firestore database instance
 db = firestore.client()
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': "clientes",
-#         'ENFORCE_SCHEMA': False,
-#         'CLIENT': {
-#             'host': '10.128.0.53:27017',  # Asegúrate de que la IP y el puerto son correctos
-#             'username': 'admin_user',
-#             'password': 'sprint321',
-#             'authSource': 'admin',  # La base de datos contra la cual se autentica
-#             'authMechanism': 'SCRAM-SHA-1'  # Mecanismo de autenticación
-#         }
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy',
+    }
+}
 
 
 # Password validation
