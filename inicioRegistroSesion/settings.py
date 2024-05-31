@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': "clientes",
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': '192.168.10.20:27017',  # Asegúrate de que la IP y el puerto son correctos
+            'host': '10.128.0.53:27017',  # Asegúrate de que la IP y el puerto son correctos
             'username': 'admin_user',
             'password': 'sprint321',
             'authSource': 'admin',  # La base de datos contra la cual se autentica
