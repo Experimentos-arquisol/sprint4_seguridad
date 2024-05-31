@@ -31,10 +31,19 @@ def consultar_solicitudes():
         return str(e)
 
 
-    
 def consultar_solicitud(correo):
     try:
-        solicitud = ManejadorSolicitudes.objects.get(correo=correo)
-        return solicitud
+        # Crear una consulta en Datastore para la entidad 'Solicitud'
+        query = settings.DB.query(kind='Solicitud')
+        query.add_filter('correo', '=', correo)
+        resultado = list(query.fetch(limit=1))
+        
+        if resultado:
+            # Devuelve el primer resultado como un diccionario
+            return dict(resultado[0])
+        else:
+            # No se encontró ninguna solicitud con ese correo
+            return None
     except Exception as e:
+        print(e)
         return None
