@@ -58,7 +58,7 @@ def ver_solicitudes(request):
 @csrf_exempt
 def validar_usuario(request):
     email = request.POST.get('correo')
-    url_manejador_usuarios = 'http://localhost:8000/cliente/validarUsuario/'
+    url_manejador_usuarios = 'http://34.173.163.109:8000/cliente/validarUsuario/'
 
     try:
         response = requests.post(url_manejador_usuarios, data={'correo': email})
