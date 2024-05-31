@@ -54,26 +54,13 @@ def crear_usuario(request):
 @csrf_exempt
 def validar_usuario(request):
     email = request.POST.get('correo')
-    url_api_banco = 'http://192.168.10.20:5000/validar_cliente/'
+    url_api_banco = 'http://192.168.0.9:5000/validar_cliente/'
     print(email)
     try:
         response = requests.post(url_api_banco, data={'correo': email})
-        print("desde validar usuario")
-        print(response)
-        response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
-
-        if response.json().get('existe', False): 
-
-            # telefono = response.json().get('telefono')
-            # print(telefono)
-            # request.session['correo'] = email  # Guarda en la sesión
-            # request.session['telefono'] = telefono
-            # otp = enviar_otp_telefono(telefono)
-            # request.session['otp'] = otp
-            # return redirect(vista_ingreso_contrasena)
-            return (response.json())
-        else:
-            return (response.json())
+        
+        #response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+        return (JsonResponse(response.json()))
     except requests.exceptions.RequestException as e:
         #return render(request, 'login_step_one.html', {'error': f"Error al validar el usuario: {e}"})
         print(e)

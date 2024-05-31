@@ -40,9 +40,11 @@ def ver_solicitud(request):
     elif request.method == 'POST':
         data = request.POST
         try:
-            validar_usuario(request)
-            solicitud = sl.consultar_solicitud(data['correo'])
-            return render(request, 'solicitud/solicitud_lista.html', {'solicitud': solicitud })
+            if validar_usuario(request).json()['existe']:
+                solicitud = sl.consultar_solicitud(data['correo'])
+                return render(request, 'solicitud/solicitud_lista.html', {'solicitud': solicitud })
+            else:
+                return render(request, 'solicitud/noexitoso.html', {'error': 'El usuario no existe en el Banco'})
         except requests.exceptions.RequestException as e:
             return HttpResponse(f"Error al consultar la solicitud al Banco: {e}", status=500)
 
@@ -60,8 +62,9 @@ def validar_usuario(request):
 
     try:
         response = requests.post(url_manejador_usuarios, data={'correo': email})
-        print(response)
-        response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+        #response.raise_for_status()  # Lanza una excepción si la solicitud no es exitosa
+        print("hola",response)
+        return response
         
     except requests.exceptions.RequestException as e:
         return HttpResponse(f"Error al validar el cliente en el API de Banco: {e}")
