@@ -52,7 +52,6 @@ def ver_solicitud(request):
 def ver_solicitudes(request):
     if request.method == 'GET':
         solicitudes = sl.consultar_solicitudes()
-        print(solicitudes)
         return render(request, 'solicitud/vista_solicitudes.html', {'solicitudes': solicitudes})
 
 

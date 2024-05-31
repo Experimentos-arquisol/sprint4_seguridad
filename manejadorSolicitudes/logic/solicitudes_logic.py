@@ -39,7 +39,8 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
 
     try:
-        solicitudes = db.collection('solicitudes').get()
+        solicitudes = db.collection('solicitudes')
+        print(db.collection('solicitudes'))
         return solicitudes
     except Exception as e:
         return None
