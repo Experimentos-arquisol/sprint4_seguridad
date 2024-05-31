@@ -41,8 +41,8 @@ def enviar_solicitud(form_data):
 def consultar_solicitudes():
 
     try:
-        solicitudes = settings.db.collection('solicitudes').stream()
-        print(settings.db.collection('solicitudes').stream())
+        solicitudes = settings.DB.collection('solicitudes').stream()
+        print(settings.DB.collection('solicitudes').stream())
         documents = [{doc.id: doc.to_dict()} for doc in solicitudes]
         print(documents)
         return solicitudes

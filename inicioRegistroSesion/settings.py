@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 import firebase_admin
-from firebase_admin import credentials, firestore, initialize_app
+from firebase_admin import credentials
 from google.cloud import firestore
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -87,7 +87,7 @@ cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
 firebase_admin.initialize_app(cred)
 
 # Get Firestore database instance
-db = firestore.Client()
+DB = firestore.Client()
 
 DATABASES = {
     'default': {
