@@ -96,7 +96,7 @@ resources:
 
 # Database instance
 - type: compute.v1.instance
-  name: usuarios-db-instance-1
+  name: usuarios-db-instance
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
@@ -130,10 +130,78 @@ resources:
           echo "max_connections=2000" | sudo tee -a /etc/postgresql/12/main/postgresql.conf
           sudo service postgresql restart
 
+# Database instance
+- type: compute.v1.instance
+  name: solicitudes-db-instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
+      networkIP: 10.128.0.53
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items:
+      - usuarios-db
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt-get install -y mongodb
+          sudo systemctl start mongodb
+          sudo systemctl enable mongodb
+          # MongoDB does not require an explicit user creation step by default for local access
+          mongo --eval "db.createUser({user: 'admin_user', pwd: 'sprint321', roles: [{role: 'readWrite', db: 'usuarios_db'}]})"
+          # Listen to all interfaces
+          sudo sed -i 's/bind_ip = 127.0.0.1/bind_ip = 0.0.0.0/' /etc/mongodb.conf
+          # Optional: Adjust additional settings such as port and memory limits as needed
+          sudo systemctl restart mongodb
+
 
 #App instance A
 - type: compute.v1.instance
-  name: majeador-usuarios-app-a
+  name: manejador-solicitudes-app-a
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
+      networkIP: 10.128.0.55
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+#App instance B
+- type: compute.v1.instance
+  name: manejador-solicitudes-app-b
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
@@ -161,9 +229,9 @@ resources:
           sudo apt-get update
           sudo apt install python3-pip -y
 
-#App instance B
+#App instance c
 - type: compute.v1.instance
-  name: api-crm-app-b
+  name: manejador-solicitudes-app-c
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
@@ -177,6 +245,96 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
       networkIP: 10.128.0.57
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+#App instance d
+- type: compute.v1.instance
+  name: manejador-solicitudes-app-d
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
+      networkIP: 10.128.0.58
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+#App instance e
+- type: compute.v1.instance
+  name: manejador-usuarios-app
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
+      networkIP: 10.128.0.59
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+    tags:
+      items: 
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+#App instance e
+- type: compute.v1.instance
+  name: api-crm-app
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/healthy-firefly-415316/global/networks/default
+      networkIP: 10.128.0.60
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
